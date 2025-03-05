@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FreezyGames - Logiciels</title>
+<title>FreezyGames - Jeux</title>
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -24,16 +24,22 @@
 <li><a href="aide.html">Aide</a></li>
 </ul>
 
-<a href="https://discord.gg/c9PaQguCdj" target="_blank" class="btn-jeux">Demande de Logiciels</a>
+<a href="https://discord.gg/c9PaQguCdj" target="_blank" class="btn-jeux">Demande de jeux</a>
 
 <form id="search-form" class="search-form" onsubmit="event.preventDefault(); filterGames();">
 <input type="text" id="search-input" placeholder="Rechercher un jeu..."  autocomplete="off" /></form></div></header>
 
 <section class="games">
-<h2>Logiciels à télécharger</h2>
+<h2>Jeux à télécharger</h2>
 
+<div class="paginationH">
+<a href="jeux-page=1.html" class="page-link">1</a>
+<a href="jeux-page=2.html" class="page-link">2</a>
+</div>
 
 <!-- 
+<div class="game-card"><a href="" target="_blank"><div class="game-image" style="background-image: url('');"><div class="game-name"></div><img src="https://i.imgur.com/UCzHGHM.png" class="game-icon" alt="Icon"></div></a></div> 
+
 <div class="game-card"><a href="" target="_blank"><div class="game-image" style="background-image: url('');"><div class="game-name"></div></div></a></div> 
 -->
 
@@ -41,6 +47,11 @@
 <div class="games-grid">
 
 </div></div></div></section>
+
+<div class="pagination">
+<a href="jeux-page=1.html" class="page-link">1</a>
+<a href="jeux-page=2.html" class="page-link">2</a>
+</div>
 
 <script>
   function filterGames() {
@@ -73,7 +84,7 @@ document.querySelector('.close-info-jeux').addEventListener('click', function() 
     document.querySelector('.info-box-jeux').classList.remove('open');
     document.querySelector('.info-overlay-jeux').classList.remove('open');
 });
-
+  
 </script>
 
 </body>
