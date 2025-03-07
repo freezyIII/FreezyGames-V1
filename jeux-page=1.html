@@ -32,7 +32,7 @@
 <section class="games">
 <h2>Jeux à télécharger</h2>
 
-<div class="paginationH">
+<div class="pagination">
 <a href="jeux-page=1.html" class="page-link">1</a>
 <a href="jeux-page=2.html" class="page-link">2</a>
 </div>
@@ -233,8 +233,51 @@ document.querySelector('.close-info-jeux').addEventListener('click', function() 
     document.querySelector('.info-box-jeux').classList.remove('open');
     document.querySelector('.info-overlay-jeux').classList.remove('open');
 });
-  
+
 </script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const gamesPerPage = 150; // Nombre max de jeux par page
+    const allGames = document.querySelectorAll(".game-card");
+    const totalGames = allGames.length;
+    const totalPages = Math.ceil(totalGames / gamesPerPage);
+
+    // Récupère le numéro de page actuel depuis l'URL
+    const urlParams = new URLSearchParams(window.location.search);
+    let currentPage = parseInt(urlParams.get("page")) || 1;
+
+    function showGames() {
+      allGames.forEach((game, index) => {
+        const start = (currentPage - 1) * gamesPerPage;
+        const end = start + gamesPerPage;
+        game.style.display = index >= start && index < end ? "block" : "none";
+      });
+    }
+
+    function generatePagination() {
+  const paginationContainers = document.querySelectorAll(".pagination");
+  
+  paginationContainers.forEach(paginationContainer => {
+    paginationContainer.innerHTML = ""; // Vide la pagination existante
+
+    for (let i = 1; i <= totalPages; i++) {
+      let pageLink = document.createElement("a");
+      pageLink.href = `?page=${i}`;
+      pageLink.className = "page-link";
+      pageLink.textContent = i;
+      if (i === currentPage) pageLink.style.fontWeight = "bold";
+      paginationContainer.appendChild(pageLink);
+    }
+  });
+}
+
+
+    showGames();
+    generatePagination();
+  });
+</script>
+
 
 </body>
 </html>
