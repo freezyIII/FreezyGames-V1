@@ -204,25 +204,25 @@
 
 <script>
   function filterGames() {
-    const searchInput = document.getElementById("search-input").value.trim();
-    const gameCards = document.querySelectorAll(".game-card");
+  const searchInput = document.getElementById("search-input").value.trim();
+  const gameCards = document.querySelectorAll(".game-card");
 
-    if (searchInput === "") {
-      alert("Veuillez entrer un terme de recherche.");
-      return;
-    }
-
-    gameCards.forEach(card => {
-      const gameName = card.querySelector(".game-name").textContent.toLowerCase();
-      if (gameName.includes(searchInput.toLowerCase())) {
-        card.style.display = "block";
-      } else {
-        card.style.display = "none";
-      }
-    });
-
-    document.getElementById("search-input").value = "";
+  if (searchInput === "") {
+    return;
   }
+
+  gameCards.forEach(card => {
+    const gameName = card.querySelector(".game-name").textContent.toLowerCase();
+    if (gameName.includes(searchInput.toLowerCase())) {
+      card.style.display = "block";
+    } else {
+      card.style.display = "none";
+    }
+  });
+
+  document.getElementById("search-input").value = "";
+}
+
 
   document.querySelector('.btn-jeux').addEventListener('click', function() {
     document.querySelector('.info-box-jeux').classList.add('open');
