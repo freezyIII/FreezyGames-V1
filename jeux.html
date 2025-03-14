@@ -25,16 +25,36 @@
 </ul>
 
 <a href="https://discord.gg/c9PaQguCdj" target="_blank" class="btn-jeux">Demande de jeux</a>
+</div></header>
 
 <form id="search-form" class="search-form" onsubmit="event.preventDefault(); filterGames();">
-<input type="text" id="search-input" placeholder="Rechercher un jeu..."  autocomplete="off" /></form></div></header>
+  <input type="text" id="search-input" placeholder="Rechercher un jeu..." autocomplete="off" />
+  <button type="submit" id="category-button" onclick="toggleCategorySelection()" disabled>
+    Indisponible
+  </button>
+  <!-- Message en bas à droite -->
+  <span id="disabled-message" style="position: absolute; bottom: -20px; right: 0; font-size: 12px; color: gray;">
+    Indisponible
+  </span>
+</form>
 
-<section class="games">
-<h2>Jeux à télécharger</h2>
+<!-- Fenêtre modale -->
+<div id="modal" class="modal" style="display: none;">
+  <div class="modal-content">
+    <div class="category">
+      <label>
+        <input type="checkbox" id="multiplayer-checkbox" />
+        Multijoueur
+      </label>
+    </div>
+  </div>
+</div>
 
-<div class="pagination">
-<a href="jeux-page=1.html" class="page-link">1</a>
-<a href="jeux-page=2.html" class="page-link">2</a>
+
+
+<div class="paginationH">
+<a href="jeux.html?page=1" class="page-link">1</a>
+<a href="jeux.html?page=2" class="page-link">2</a>
 </div>
 
 <!-- 
@@ -215,8 +235,8 @@
 </div></div></div></section>
 
 <div class="pagination">
-<a href="jeux-page=1.html" class="page-link">1</a>
-<a href="jeux-page=2.html" class="page-link">2</a>
+<a href="jeux.html?page=1" class="page-link">1</a>
+<a href="jeux.html?page=2" class="page-link">2</a>
 </div>
 
 <script>
@@ -293,6 +313,21 @@ document.querySelector('.close-info-jeux').addEventListener('click', function() 
     showGames();
     generatePagination();
   });
+
+  function toggleCategorySelection() {
+  const modal = document.getElementById('modal');
+  // Affiche la fenêtre modale
+  modal.style.display = "flex";
+  
+  // Optionnellement, ajoutez un événement pour fermer la fenêtre modale si vous cliquez en dehors de celle-ci
+  modal.addEventListener('click', function(event) {
+    if (event.target === modal) {
+      modal.style.display = "none";
+    }
+  });
+}
+
+
 </script>
 
 
