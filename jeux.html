@@ -237,17 +237,18 @@
 </div>
 
 <script>
-
+  
   function filterGames() {
     const searchInput = document.getElementById("search-input").value.trim();
     const gameCards = document.querySelectorAll(".game-card");
-  
-    localStorage.setItem('searchQuery', searchInput);
-  
+
+    // Enlever l'élément 'searchQuery' du localStorage chaque fois qu'on effectue une recherche
     if (searchInput === "") {
-      return;
+      localStorage.removeItem('searchQuery');  // On supprime la recherche dans localStorage
+    } else {
+      localStorage.setItem('searchQuery', searchInput);
     }
-  
+
     gameCards.forEach(card => {
       const gameName = card.querySelector(".game-name").textContent.toLowerCase();
       if (gameName.includes(searchInput.toLowerCase())) {
@@ -256,27 +257,27 @@
         card.style.display = "none";
       }
     });
-  
+
     applyFilter();
   }
-  
+
   document.addEventListener("DOMContentLoaded", function () {
     const searchInput = document.getElementById("search-input");
-    const storedSearchQuery = localStorage.getItem('searchQuery');
     
-    if (storedSearchQuery) {
-      searchInput.value = storedSearchQuery;
-      filterGames();
-    }
-  
+    // Supprimer la clé 'searchQuery' du localStorage lorsque la page est chargée pour un rafraîchissement
+    localStorage.removeItem('searchQuery');
+
+    // Réinitialiser la recherche dans l'input
+    searchInput.value = "";
+
     const gamesPerPage = 150;
     const allGames = document.querySelectorAll(".game-card");
     const totalGames = allGames.length;
     const totalPages = Math.ceil(totalGames / gamesPerPage);
-  
+
     const urlParams = new URLSearchParams(window.location.search);
     let currentPage = parseInt(urlParams.get("page")) || 1;
-  
+
     function showGames() {
       allGames.forEach((game, index) => {
         const start = (currentPage - 1) * gamesPerPage;
@@ -284,13 +285,13 @@
         game.style.display = index >= start && index < end ? "block" : "none";
       });
     }
-  
+
     function generatePagination() {
       const paginationContainers = document.querySelectorAll(".pagination");
-  
+
       paginationContainers.forEach(paginationContainer => {
         paginationContainer.innerHTML = "";
-  
+
         for (let i = 1; i <= totalPages; i++) {
           let pageLink = document.createElement("a");
           pageLink.href = `?page=${i}`;
@@ -301,52 +302,13 @@
         }
       });
     }
-  
+
     showGames();
     generatePagination();
   });
 
+</script>
 
-
-
-
-  
-
-
-
-
-
-
-
-
-    // Fonction pour ouvrir ou fermer le panneau modale
-    function toggleCategorySelection() {
-    const modal = document.getElementById('modal');
-    modal.style.display = (modal.style.display === 'flex') ? 'none' : 'flex';
-  }
-
-  // Fonction pour appliquer le filtre et fermer le panneau modale
-  function applyFilter() {
-    const multiplayerCheckbox = document.getElementById('multiplayer-checkbox');
-    const isMultiplayerChecked = multiplayerCheckbox.checked;
-    
-    // Vous pouvez ajouter ici la logique pour filtrer les jeux en fonction du filtre sélectionné
-    console.log('Filtre appliqué, multijoueur:', isMultiplayerChecked);
-
-    // Fermer la fenêtre modale après l'application du filtre
-    toggleCategorySelection();
-  }
-
-  // Ferme le panneau si l'utilisateur clique à l'extérieur du contenu modale
-  window.onclick = function(event) {
-    const modal = document.getElementById('modal');
-    if (event.target === modal) {
-      toggleCategorySelection();
-    }
-  }
-
-  </script>
-  
 
 </body>
 </html>
