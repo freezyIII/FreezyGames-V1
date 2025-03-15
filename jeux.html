@@ -29,12 +29,7 @@
 
 <form id="search-form" class="search-form" onsubmit="event.preventDefault(); filterGames();">
   <input type="text" id="search-input" placeholder="Rechercher un jeu..." autocomplete="off" />
-  <button type="submit" id="category-button" onclick="toggleCategorySelection()" disabled>
-    Indisponible
-  </button>
-  <!-- Message en bas à droite -->
-  <span id="disabled-message" style="position: absolute; bottom: -20px; right: 0; font-size: 12px; color: gray;">
-  </span>
+  <button type="button" id="category-button" onclick="toggleCategorySelection()">FILTRER</button>
 </form>
 
 <!-- Fenêtre modale -->
@@ -42,14 +37,17 @@
   <div class="modal-content">
     <div class="category">
       <label>
-        <input type="checkbox" id="multiplayer-checkbox" />
+        <input type="checkbox" id="multiplayer-checkbox" onchange="checkCategoryStatus()" />
         Multijoueur
       </label>
     </div>
+
+    <!-- Conteneur du bouton, centré en bas -->
+    <div class="apply-filter-container">
+      <button id="apply-filter" onclick="applyFilter()">Appliquer le filtre</button>
+    </div>
   </div>
 </div>
-
-
 
 <div class="paginationH">
 <a href="jeux.html?page=1" class="page-link">1</a>
@@ -239,9 +237,13 @@
 </div>
 
 <script>
-  function filterGames() {
+// Filtrer les jeux en fonction de la recherche
+function filterGames() {
   const searchInput = document.getElementById("search-input").value.trim();
   const gameCards = document.querySelectorAll(".game-card");
+
+  // Sauvegarder la recherche dans localStorage
+  localStorage.setItem('searchQuery', searchInput);
 
   if (searchInput === "") {
     return;
@@ -255,76 +257,119 @@
       card.style.display = "none";
     }
   });
-
-  document.getElementById("search-input").value = "";
 }
 
-
-  document.querySelector('.btn-jeux').addEventListener('click', function() {
-    document.querySelector('.info-box-jeux').classList.add('open');
-    document.querySelector('.info-overlay-jeux').classList.add('open');
-});
-
-document.querySelector('.close-info-jeux').addEventListener('click', function() {
-    document.querySelector('.info-box-jeux').classList.remove('open');
-    document.querySelector('.info-overlay-jeux').classList.remove('open');
-});
-
-</script>
-
-<script>
-  document.addEventListener("DOMContentLoaded", function () {
-    const gamesPerPage = 150; // Nombre max de jeux par page
-    const allGames = document.querySelectorAll(".game-card");
-    const totalGames = allGames.length;
-    const totalPages = Math.ceil(totalGames / gamesPerPage);
-
-    // Récupère le numéro de page actuel depuis l'URL
-    const urlParams = new URLSearchParams(window.location.search);
-    let currentPage = parseInt(urlParams.get("page")) || 1;
-
-    function showGames() {
-      allGames.forEach((game, index) => {
-        const start = (currentPage - 1) * gamesPerPage;
-        const end = start + gamesPerPage;
-        game.style.display = index >= start && index < end ? "block" : "none";
-      });
-    }
-
-    function generatePagination() {
-  const paginationContainers = document.querySelectorAll(".pagination");
+// Charger la recherche à partir du localStorage si elle existe
+document.addEventListener("DOMContentLoaded", function () {
+  const searchInput = document.getElementById("search-input");
+  const storedSearchQuery = localStorage.getItem('searchQuery');
   
-  paginationContainers.forEach(paginationContainer => {
-    paginationContainer.innerHTML = ""; // Vide la pagination existante
+  if (storedSearchQuery) {
+    searchInput.value = storedSearchQuery;
+    filterGames(); // Appliquer la recherche stockée
+  }
 
-    for (let i = 1; i <= totalPages; i++) {
-      let pageLink = document.createElement("a");
-      pageLink.href = `?page=${i}`;
-      pageLink.className = "page-link";
-      pageLink.textContent = i;
-      if (i === currentPage) pageLink.style.fontWeight = "bold";
-      paginationContainer.appendChild(pageLink);
-    }
-  });
-}
+  const gamesPerPage = 150;
+  const allGames = document.querySelectorAll(".game-card");
+  const totalGames = allGames.length;
+  const totalPages = Math.ceil(totalGames / gamesPerPage);
 
+  const urlParams = new URLSearchParams(window.location.search);
+  let currentPage = parseInt(urlParams.get("page")) || 1;
 
-    showGames();
-    generatePagination();
-  });
+  function showGames() {
+    allGames.forEach((game, index) => {
+      const start = (currentPage - 1) * gamesPerPage;
+      const end = start + gamesPerPage;
+      game.style.display = index >= start && index < end ? "block" : "none";
+    });
+  }
 
-  function toggleCategorySelection() {
+  function generatePagination() {
+    const paginationContainers = document.querySelectorAll(".pagination");
+
+    paginationContainers.forEach(paginationContainer => {
+      paginationContainer.innerHTML = "";
+
+      for (let i = 1; i <= totalPages; i++) {
+        let pageLink = document.createElement("a");
+        pageLink.href = `?page=${i}`;
+        pageLink.className = "page-link";
+        pageLink.textContent = i;
+        if (i === currentPage) pageLink.style.fontWeight = "bold";
+        paginationContainer.appendChild(pageLink);
+      }
+    });
+  }
+
+  showGames();
+  generatePagination();
+});
+
+// Fonction pour basculer la sélection des catégories
+function toggleCategorySelection() {
   const modal = document.getElementById('modal');
-  // Affiche la fenêtre modale
+  const checkbox = document.getElementById('multiplayer-checkbox');
+
+  // Charger l'état de la case à cocher à partir du localStorage
+  if (localStorage.getItem('multiplayerChecked') === 'true') {
+    checkbox.checked = true;
+  } else {
+    checkbox.checked = false;
+  }
+
   modal.style.display = "flex";
-  
-  // Optionnellement, ajoutez un événement pour fermer la fenêtre modale si vous cliquez en dehors de celle-ci
-  modal.addEventListener('click', function(event) {
+
+  modal.addEventListener('click', function (event) {
     if (event.target === modal) {
       modal.style.display = "none";
     }
   });
 }
+
+// Appliquer le filtre basé sur la case à cocher
+function applyFilter() {
+  console.log("Filtre appliqué !");
+
+  const checkbox = document.getElementById('multiplayer-checkbox');
+
+  // Enregistrer l'état de la case dans localStorage
+  localStorage.setItem('multiplayerChecked', checkbox.checked);
+
+  // Appliquer le filtre en fonction de l'état de la case à cocher
+  const gameCards = document.querySelectorAll(".game-card");
+
+  gameCards.forEach(card => {
+    if (checkbox.checked) {
+      // Afficher les jeux avec la classe 'game-icon' uniquement
+      if (card.querySelector(".game-icon")) {
+        card.style.display = "block";
+      } else {
+        card.style.display = "none";
+      }
+    } else {
+      // Si le filtre est désactivé, afficher tous les jeux
+      card.style.display = "block";
+    }
+  });
+
+  document.getElementById('modal').style.display = 'none';
+}
+
+// Sauvegarder et appliquer l'état du filtre au chargement de la page
+document.addEventListener("DOMContentLoaded", function () {
+  const checkbox = document.getElementById('multiplayer-checkbox');
+  const storedMultiplayerChecked = localStorage.getItem('multiplayerChecked');
+
+  if (storedMultiplayerChecked === 'true') {
+    checkbox.checked = true;
+  } else {
+    checkbox.checked = false;
+  }
+
+  // Appliquer le filtre si la case à cocher est activée
+  applyFilter();
+});
 
 
 </script>
