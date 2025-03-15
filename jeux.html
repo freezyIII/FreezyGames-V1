@@ -237,143 +237,116 @@
 </div>
 
 <script>
-// Filtrer les jeux en fonction de la recherche
-function filterGames() {
-  const searchInput = document.getElementById("search-input").value.trim();
-  const gameCards = document.querySelectorAll(".game-card");
 
-  // Sauvegarder la recherche dans localStorage
-  localStorage.setItem('searchQuery', searchInput);
-
-  if (searchInput === "") {
-    return;
-  }
-
-  gameCards.forEach(card => {
-    const gameName = card.querySelector(".game-name").textContent.toLowerCase();
-    if (gameName.includes(searchInput.toLowerCase())) {
-      card.style.display = "block";
-    } else {
-      card.style.display = "none";
-    }
-  });
-}
-
-// Charger la recherche à partir du localStorage si elle existe
-document.addEventListener("DOMContentLoaded", function () {
-  const searchInput = document.getElementById("search-input");
-  const storedSearchQuery = localStorage.getItem('searchQuery');
+  function filterGames() {
+    const searchInput = document.getElementById("search-input").value.trim();
+    const gameCards = document.querySelectorAll(".game-card");
   
-  if (storedSearchQuery) {
-    searchInput.value = storedSearchQuery;
-    filterGames(); // Appliquer la recherche stockée
-  }
-
-  const gamesPerPage = 150;
-  const allGames = document.querySelectorAll(".game-card");
-  const totalGames = allGames.length;
-  const totalPages = Math.ceil(totalGames / gamesPerPage);
-
-  const urlParams = new URLSearchParams(window.location.search);
-  let currentPage = parseInt(urlParams.get("page")) || 1;
-
-  function showGames() {
-    allGames.forEach((game, index) => {
-      const start = (currentPage - 1) * gamesPerPage;
-      const end = start + gamesPerPage;
-      game.style.display = index >= start && index < end ? "block" : "none";
-    });
-  }
-
-  function generatePagination() {
-    const paginationContainers = document.querySelectorAll(".pagination");
-
-    paginationContainers.forEach(paginationContainer => {
-      paginationContainer.innerHTML = "";
-
-      for (let i = 1; i <= totalPages; i++) {
-        let pageLink = document.createElement("a");
-        pageLink.href = `?page=${i}`;
-        pageLink.className = "page-link";
-        pageLink.textContent = i;
-        if (i === currentPage) pageLink.style.fontWeight = "bold";
-        paginationContainer.appendChild(pageLink);
-      }
-    });
-  }
-
-  showGames();
-  generatePagination();
-});
-
-// Fonction pour basculer la sélection des catégories
-function toggleCategorySelection() {
-  const modal = document.getElementById('modal');
-  const checkbox = document.getElementById('multiplayer-checkbox');
-
-  // Charger l'état de la case à cocher à partir du localStorage
-  if (localStorage.getItem('multiplayerChecked') === 'true') {
-    checkbox.checked = true;
-  } else {
-    checkbox.checked = false;
-  }
-
-  modal.style.display = "flex";
-
-  modal.addEventListener('click', function (event) {
-    if (event.target === modal) {
-      modal.style.display = "none";
+    localStorage.setItem('searchQuery', searchInput);
+  
+    if (searchInput === "") {
+      return;
     }
-  });
-}
-
-// Appliquer le filtre basé sur la case à cocher
-function applyFilter() {
-  console.log("Filtre appliqué !");
-
-  const checkbox = document.getElementById('multiplayer-checkbox');
-
-  // Enregistrer l'état de la case dans localStorage
-  localStorage.setItem('multiplayerChecked', checkbox.checked);
-
-  // Appliquer le filtre en fonction de l'état de la case à cocher
-  const gameCards = document.querySelectorAll(".game-card");
-
-  gameCards.forEach(card => {
-    if (checkbox.checked) {
-      // Afficher les jeux avec la classe 'game-icon' uniquement
-      if (card.querySelector(".game-icon")) {
+  
+    gameCards.forEach(card => {
+      const gameName = card.querySelector(".game-name").textContent.toLowerCase();
+      if (gameName.includes(searchInput.toLowerCase())) {
         card.style.display = "block";
       } else {
         card.style.display = "none";
       }
-    } else {
-      // Si le filtre est désactivé, afficher tous les jeux
-      card.style.display = "block";
+    });
+  
+    applyFilter();
+  }
+  
+  document.addEventListener("DOMContentLoaded", function () {
+    const searchInput = document.getElementById("search-input");
+    const storedSearchQuery = localStorage.getItem('searchQuery');
+    
+    if (storedSearchQuery) {
+      searchInput.value = storedSearchQuery;
+      filterGames();
     }
+  
+    const gamesPerPage = 150;
+    const allGames = document.querySelectorAll(".game-card");
+    const totalGames = allGames.length;
+    const totalPages = Math.ceil(totalGames / gamesPerPage);
+  
+    const urlParams = new URLSearchParams(window.location.search);
+    let currentPage = parseInt(urlParams.get("page")) || 1;
+  
+    function showGames() {
+      allGames.forEach((game, index) => {
+        const start = (currentPage - 1) * gamesPerPage;
+        const end = start + gamesPerPage;
+        game.style.display = index >= start && index < end ? "block" : "none";
+      });
+    }
+  
+    function generatePagination() {
+      const paginationContainers = document.querySelectorAll(".pagination");
+  
+      paginationContainers.forEach(paginationContainer => {
+        paginationContainer.innerHTML = "";
+  
+        for (let i = 1; i <= totalPages; i++) {
+          let pageLink = document.createElement("a");
+          pageLink.href = `?page=${i}`;
+          pageLink.className = "page-link";
+          pageLink.textContent = i;
+          if (i === currentPage) pageLink.style.fontWeight = "bold";
+          paginationContainer.appendChild(pageLink);
+        }
+      });
+    }
+  
+    showGames();
+    generatePagination();
   });
 
-  document.getElementById('modal').style.display = 'none';
-}
 
-// Sauvegarder et appliquer l'état du filtre au chargement de la page
-document.addEventListener("DOMContentLoaded", function () {
-  const checkbox = document.getElementById('multiplayer-checkbox');
-  const storedMultiplayerChecked = localStorage.getItem('multiplayerChecked');
 
-  if (storedMultiplayerChecked === 'true') {
-    checkbox.checked = true;
-  } else {
-    checkbox.checked = false;
+
+
+  
+
+
+
+
+
+
+
+
+    // Fonction pour ouvrir ou fermer le panneau modale
+    function toggleCategorySelection() {
+    const modal = document.getElementById('modal');
+    modal.style.display = (modal.style.display === 'flex') ? 'none' : 'flex';
   }
 
-  // Appliquer le filtre si la case à cocher est activée
-  applyFilter();
-});
+  // Fonction pour appliquer le filtre et fermer le panneau modale
+  function applyFilter() {
+    const multiplayerCheckbox = document.getElementById('multiplayer-checkbox');
+    const isMultiplayerChecked = multiplayerCheckbox.checked;
+    
+    // Vous pouvez ajouter ici la logique pour filtrer les jeux en fonction du filtre sélectionné
+    console.log('Filtre appliqué, multijoueur:', isMultiplayerChecked);
 
+    // Fermer la fenêtre modale après l'application du filtre
+    toggleCategorySelection();
+  }
 
-</script>
+  // Ferme le panneau si l'utilisateur clique à l'extérieur du contenu modale
+  window.onclick = function(event) {
+    const modal = document.getElementById('modal');
+    if (event.target === modal) {
+      toggleCategorySelection();
+    }
+  }
 
+  </script>
+  
 
 </body>
 </html>
