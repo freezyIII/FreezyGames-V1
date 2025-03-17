@@ -20,17 +20,13 @@
 <span>u</span><span>n</span> 
 <span>d</span><span>o</span><span>n</span>
 </a></li>
-<li><a href="logiciels.html">Logiciels</a></li>
+<li><a href="avis.html">Avis</a></li>
 <li><a href="aide.html">Aide</a></li>
 </ul>
 
-<a href="https://discord.gg/c9PaQguCdj" target="_blank" class="btn-jeux">Demande de jeux</a>
-</div></header>
+<a href="https://discord.gg/c9PaQguCdj" target="_blank" class="btn-jeux">Demande de jeux</a></div></header>
 
-<form id="search-form" class="search-form" onsubmit="event.preventDefault(); filterGames();">
-  <input type="text" id="search-input" placeholder="Rechercher un jeu..." autocomplete="off" />
-  <button type="button" id="category-button" onclick="toggleCategorySelection()">FILTRER</button>
-</form>
+<form id="search-form" class="search-form" onsubmit="event.preventDefault(); filterGames();"><input type="text" id="search-input" placeholder="Rechercher un jeu..." autocomplete="off" /><button type="button" id="category-button" onclick="toggleCategorySelection()">FILTRER</button></form>
 
 <!-- Fenêtre modale -->
 <div id="modal" class="modal" style="display: none;">
@@ -257,9 +253,8 @@
     const searchInput = document.getElementById("search-input").value.trim();
     const gameCards = document.querySelectorAll(".game-card");
 
-    // Enlever l'élément 'searchQuery' du localStorage chaque fois qu'on effectue une recherche
     if (searchInput === "") {
-      localStorage.removeItem('searchQuery');  // On supprime la recherche dans localStorage
+      localStorage.removeItem('searchQuery');
     } else {
       localStorage.setItem('searchQuery', searchInput);
     }
