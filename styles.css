@@ -64,8 +64,7 @@ button {background-color: rgba(255, 0, 0, 0.705);color: white;font-size: 1.5rem;
 #apply-filter:hover {background-color: #ff00008e;}
 
 /* Boutons des Pages */
-.paginationH {display: flex;justify-content: center;margin-bottom: 1.5rem;}
-.pagination {display: flex;justify-content: center;margin-bottom: 3rem; margin-top: 1.5rem;}
+.pagination {display: flex;justify-content: center;margin-bottom: 1.5rem; margin-top: 1.5rem;}
 .page-link {padding: 10px 15px;margin: 0 5px;background-color: rgb(54, 56, 58);color: white;text-decoration: none;border-radius: 5px;}
 .page-link:hover {background-color: #343232;}
 
