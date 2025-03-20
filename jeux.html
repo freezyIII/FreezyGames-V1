@@ -33,29 +33,21 @@
 
 <div id="modal-overlay" class="overlay"></div>
 <div id="modal" class="modal">
-    <div class="modal-content">
-        <button id="game-mode-button" class="game-mode-btn" onclick="toggleGameMode()">Mode de jeu</button>
+<div class="modal-content">
+<button id="game-mode-button" class="game-mode-btn" onclick="toggleGameMode()">Mode de jeu</button>
         
-        <div id="game-mode-container" class="game-mode-container">
-            <div class="category">
-                <label>
-                    <input type="checkbox" id="multiplayer-checkbox" onchange="checkCategoryStatus()" />
-                    <span class="checkbox-label">Multijoueur</span>
-                </label>
-            </div>
-            <div class="category">
-                <label>
-                    <input type="checkbox" id="solo-checkbox" onchange="checkCategoryStatus()" />
-                    <span class="checkbox-label">Solo</span>
-                </label>
-            </div>
-        </div>
+<div id="game-mode-container" class="game-mode-container">
+<div class="category"><label>
+<input type="checkbox" id="multiplayer-checkbox" onchange="checkCategoryStatus('multiplayer')" />
+<span class="checkbox-label">Multijoueur</span></label></div>
+
+<div class="category"><label>
+<input type="checkbox" id="solo-checkbox" onchange="checkCategoryStatus('solo')" />
+<span class="checkbox-label">Solo</span></label></div></div>
         
-        <div class="apply-filter-container">
-            <button id="apply-filter" class="appliquer-filtre" onclick="applyFilter()">Appliquer le filtre</button>
-        </div>
-    </div>
-</div>
+<div class="apply-filter-container">
+<button id="apply-filter" class="appliquer-filtre" onclick="applyFilter()">Appliquer le filtre</button></div></div></div>
+
 <div class="pagination"></div>
 
 <!-- 
@@ -339,19 +331,26 @@ function filterGames() {
     modal.style.display = "block";
     overlay.style.display = "block";
     body.style.overflow = "hidden";
-  }
-  function closeModal(reset = false) {
+
+    document.getElementById("game-mode-container").style.display = "none";
+}
+
+function closeModal(reset = false) {
     var modal = document.getElementById('modal');
     var overlay = document.getElementById('modal-overlay');
     var body = document.body;
-    if (reset) {
 
-      document.getElementById('multiplayer-checkbox').checked = savedMultiplayerState;
+    if (reset) {
+        document.getElementById('multiplayer-checkbox').checked = savedMultiplayerState;
     }
+
     modal.style.display = "none";
     overlay.style.display = "none";
     body.style.overflow = "auto";
-  }
+
+    document.getElementById("game-mode-container").style.display = "none";
+}
+
 
   function toggleCategorySelection() {
     var modal = document.getElementById('modal');
@@ -367,26 +366,39 @@ function filterGames() {
   });
 
   function applyFilter() {
-    var multiplayerCheckbox = document.getElementById('multiplayer-checkbox');
-    var isChecked = multiplayerCheckbox.checked;
+    var multiplayerCheckbox = document.getElementById('multiplayer-checkbox').checked;
+    var soloCheckbox = document.getElementById('solo-checkbox').checked;
     var allGames = document.querySelectorAll(".game-card");
 
     let filteredGames = [...allGames];
 
-    if (isChecked) {
+    if (multiplayerCheckbox && !soloCheckbox) {
         filteredGames = filteredGames.filter(game => game.querySelector(".game-icon"));
-    }
+    } else if (soloCheckbox && !multiplayerCheckbox) {
+        filteredGames = filteredGames.filter(game => !game.querySelector(".game-icon"));
+    } 
 
     setupPagination(filteredGames);
-    savedMultiplayerState = isChecked;
     closeModal(false);
 }
+
 
 
 function toggleGameMode() {
         let container = document.getElementById("game-mode-container");
         container.style.display = (container.style.display === "none" || container.style.display === "") ? "block" : "none";
     }
+
+    function checkCategoryStatus(selectedCheckbox) {
+    var multiplayerCheckbox = document.getElementById('multiplayer-checkbox');
+    var soloCheckbox = document.getElementById('solo-checkbox');
+
+    if (selectedCheckbox === 'multiplayer') {
+        soloCheckbox.checked = false;
+    } else if (selectedCheckbox === 'solo') {
+        multiplayerCheckbox.checked = false;
+    }
+}
 
 </script>
 

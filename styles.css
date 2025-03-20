@@ -65,18 +65,8 @@ h2 {font-size: 2.5rem;color: #f04e31;text-align: center;}
 .apply-filter-container {position: absolute;bottom: 20px;left: 50%;transform: translateX(-50%);}
 .appliquer-filtre {padding: 10px 20px;border: none;border-radius: 10px;background-color: #007bff;color: white;cursor: pointer;transition: background 0.3s;}
 .appliquer-filtre:hover {background-color: #0056b3;}
-.game-mode-btn {width: 95%;display: block;margin: 5px auto;padding: 13px;font-size: 20px;text-align: left;padding-left: 15px;background-color: rgba(78, 78, 78, 0.871);color: rgb(255, 255, 255);border: none;border-radius: 5px;cursor: pointer;box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);}
-
-.game-mode-container {
-    display: none;
-    width: 95%;
-    background-color: rgba(78, 78, 78, 0.871);
-    border-radius: 5px;
-    margin-top: -3px;
-    padding: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    
-}
+.game-mode-btn {width: 97%;display: block;margin: 5px auto;padding: 13px;font-size: 20px;text-align: left;padding-left: 15px;background-color: rgba(78, 78, 78, 0.871);color: rgb(255, 255, 255);border: none;border-radius: 5px;cursor: pointer;box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);}
+.game-mode-container {display: none;width: 97%;background-color: rgba(78, 78, 78, 0.871);border-radius: 5px;margin-top: -3px;padding: 10px;box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);}
 
 /* Boutons des Pages */
 .pagination {display: flex;justify-content: center;margin-bottom: 1.5rem; margin-top: 1.5rem;}
