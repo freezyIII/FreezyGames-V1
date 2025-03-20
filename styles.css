@@ -55,13 +55,28 @@ h2 {font-size: 2.5rem;color: #f04e31;text-align: center;}
 .search-form button {padding: 0.8rem 1.2rem;background-color: rgba(83, 83, 83, 0.432);color: #ffffff;border: none;border-radius: 5px;cursor: pointer;font-size: 1rem;margin-left: 10px;height: 100%;}
 
 /* Filtrer les Jeux */
-.modal {position: fixed;top: 0;left: 0;width: 100%;height: 100%;background-color: rgba(0, 0, 0, 0.5);display: none;justify-content: center;align-items: center;z-index: 1000;}
-.modal-content {background-color: #333;color: #fff;font-size: 2rem;width: 500px;height: 600px;padding: 20px;border-radius: 15px;display: flex;flex-direction: column;text-align: center;position: relative;}
-.category label {font-size: 1.5rem;display: flex;align-items: center;justify-content: center;margin-bottom: 1rem;}
-.category input[type="checkbox"] {margin-right: 1rem;transform: scale(2);vertical-align: middle;}
-.apply-filter-container {position: absolute;bottom: 0px;left: 50%;transform: translateX(-50%);width: 100%;text-align: center;}
-button {background-color: rgba(255, 0, 0, 0.705);color: white;font-size: 1.5rem;padding: 20px 165px;border: none;border-radius: 0 0 15px 15px;cursor: pointer;white-space: nowrap;}
-#apply-filter:hover {background-color: #ff00008e;}
+.overlay {position: fixed;top: 0;left: 0;width: 100%;height: 100%;background-color: rgba(0, 0, 0, 0.5);display: none;z-index: 99;box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.4);}
+.modal {display: none;position: fixed;left: 50%;top: 50%;width: 450px;height: 600px;background-color: #333;border-radius: 15px;transform: translate(-50%, -50%);box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);padding: 20px;z-index: 100;}
+.modal-content {display: flex;flex-direction: column;align-items: center;justify-content: flex-start;height: 100%;}
+.category {display: flex;align-items: center;margin-top: 0;}
+.category label {font-size: 16px;color: white;}
+.category input[type="checkbox"] {transform: scale(1.5);margin-right: 10px;}
+.checkbox-label {font-size: 16px;}
+.apply-filter-container {position: absolute;bottom: 20px;left: 50%;transform: translateX(-50%);}
+.appliquer-filtre {padding: 10px 20px;border: none;border-radius: 10px;background-color: #007bff;color: white;cursor: pointer;transition: background 0.3s;}
+.appliquer-filtre:hover {background-color: #0056b3;}
+.game-mode-btn {width: 95%;display: block;margin: 5px auto;padding: 13px;font-size: 20px;text-align: left;padding-left: 15px;background-color: rgba(78, 78, 78, 0.871);color: rgb(255, 255, 255);border: none;border-radius: 5px;cursor: pointer;box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);}
+
+.game-mode-container {
+    display: none;
+    width: 95%;
+    background-color: rgba(78, 78, 78, 0.871);
+    border-radius: 5px;
+    margin-top: -3px;
+    padding: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    
+}
 
 /* Boutons des Pages */
 .pagination {display: flex;justify-content: center;margin-bottom: 1.5rem; margin-top: 1.5rem;}

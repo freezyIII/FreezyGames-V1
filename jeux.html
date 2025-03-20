@@ -14,7 +14,7 @@
 
 <ul class="nav-links">
 <li><a href="index.html">Accueil</a></li>
-<li><a href="jeux.html?page=1">Jeux</a></li>
+<li><a href="jeux.html">Jeux</a></li>
 <li><a href="https://www.paypal.com/donate/?hosted_button_id=9TKRSPG4UTSJ2" class="animated-link no-underline" target="_blank">
 <span>F</span><span>a</span><span>i</span><span>r</span><span>e</span> 
 <span>u</span><span>n</span> 
@@ -26,29 +26,38 @@
 
 <a href="https://discord.gg/c9PaQguCdj" target="_blank" class="btn-jeux">Demande de jeux</a></div></header>
 
-<form id="search-form" class="search-form" onsubmit="event.preventDefault(); filterGames();"><input type="text" id="search-input" placeholder="Rechercher un jeu..." autocomplete="off" /><button type="button" id="category-button" onclick="toggleCategorySelection()">FILTRER</button></form>
+<form id="search-form" class="search-form" onsubmit="event.preventDefault(); filterGames();">
+<input type="text" id="search-input" placeholder="Rechercher un jeu..." autocomplete="off" />
+<button type="button" id="category-button" onclick="toggleCategorySelection()">FILTRER</button>
+</form>
 
-<!-- Fenêtre modale -->
-<div id="modal" class="modal" style="display: none;">
-  <div class="modal-content">
-    <div class="category">
-      <label>
-        <input type="checkbox" id="multiplayer-checkbox" onchange="checkCategoryStatus()" />
-        Multijoueur
-      </label>
+<div id="modal-overlay" class="overlay"></div>
+<div id="modal" class="modal">
+    <div class="modal-content">
+        <button id="game-mode-button" class="game-mode-btn" onclick="toggleGameMode()">Mode de jeu</button>
+        
+        <div id="game-mode-container" class="game-mode-container">
+            <div class="category">
+                <label>
+                    <input type="checkbox" id="multiplayer-checkbox" onchange="checkCategoryStatus()" />
+                    <span class="checkbox-label">Multijoueur</span>
+                </label>
+            </div>
+            <div class="category">
+                <label>
+                    <input type="checkbox" id="solo-checkbox" onchange="checkCategoryStatus()" />
+                    <span class="checkbox-label">Solo</span>
+                </label>
+            </div>
+        </div>
+        
+        <div class="apply-filter-container">
+            <button id="apply-filter" class="appliquer-filtre" onclick="applyFilter()">Appliquer le filtre</button>
+        </div>
     </div>
-
-    <!-- Conteneur du bouton, centré en bas -->
-    <div class="apply-filter-container">
-      <button id="apply-filter" onclick="applyFilter()">Appliquer le filtre</button>
-    </div>
-  </div>
 </div>
+<div class="pagination"></div>
 
-<div class="pagination">
-<a href="jeux.html?page=1" class="page-link">1</a>
-<a href="jeux.html?page=2" class="page-link">2</a>
-</div>
 <!-- 
 <div class="game-card"><a href="" target="_blank"><div class="game-image" style="background-image: url('');"><div class="game-name"></div><img src="https://i.imgur.com/UCzHGHM.png" class="game-icon" alt="Icon"></div></a></div> 
 
@@ -244,10 +253,7 @@
 <div class="game-card"><a href="https://www.clictune.com/jZTd" target="_blank"><div class="game-image" style="background-image: url('https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/648800/header.jpg?t=1727184011');"><div class="game-name">Raft (v1.09)</div><img src="https://i.imgur.com/UCzHGHM.png" class="game-icon" alt="Icon"></div></a></div>
 </div></div></div></section>
 
-<div class="pagination">
-<a href="jeux.html?page=1" class="page-link">1</a>
-<a href="jeux.html?page=2" class="page-link">2</a>
-</div>
+<div class="pagination"></div>
 
 <script>
   
@@ -293,6 +299,7 @@ function setupPagination(filteredGames = null) {
           e.preventDefault();
           currentPage = i;
           showGames();
+          window.scrollTo(0, 0);
           generatePagination();
         });
 
@@ -300,7 +307,6 @@ function setupPagination(filteredGames = null) {
       }
     });
   }
-
   showGames();
   generatePagination();
 }
@@ -319,10 +325,68 @@ function filterGames() {
   let filteredGames = [...allGames].filter(card => 
     card.querySelector(".game-name").textContent.toLowerCase().includes(searchInput)
   );
-
   setupPagination(filteredGames);
 }
 
+  var savedMultiplayerState = document.getElementById('multiplayer-checkbox').checked;
+
+  function openModal() {
+    var modal = document.getElementById('modal');
+    var overlay = document.getElementById('modal-overlay');
+    var body = document.body;
+
+    savedMultiplayerState = document.getElementById('multiplayer-checkbox').checked;
+    modal.style.display = "block";
+    overlay.style.display = "block";
+    body.style.overflow = "hidden";
+  }
+  function closeModal(reset = false) {
+    var modal = document.getElementById('modal');
+    var overlay = document.getElementById('modal-overlay');
+    var body = document.body;
+    if (reset) {
+
+      document.getElementById('multiplayer-checkbox').checked = savedMultiplayerState;
+    }
+    modal.style.display = "none";
+    overlay.style.display = "none";
+    body.style.overflow = "auto";
+  }
+
+  function toggleCategorySelection() {
+    var modal = document.getElementById('modal');
+    if (modal.style.display === "none" || modal.style.display === "") {
+      openModal();
+    } else {
+      closeModal(true);
+    }
+  }
+
+  document.getElementById('modal-overlay').addEventListener('click', function() {
+    closeModal(true);
+  });
+
+  function applyFilter() {
+    var multiplayerCheckbox = document.getElementById('multiplayer-checkbox');
+    var isChecked = multiplayerCheckbox.checked;
+    var allGames = document.querySelectorAll(".game-card");
+
+    let filteredGames = [...allGames];
+
+    if (isChecked) {
+        filteredGames = filteredGames.filter(game => game.querySelector(".game-icon"));
+    }
+
+    setupPagination(filteredGames);
+    savedMultiplayerState = isChecked;
+    closeModal(false);
+}
+
+
+function toggleGameMode() {
+        let container = document.getElementById("game-mode-container");
+        container.style.display = (container.style.display === "none" || container.style.display === "") ? "block" : "none";
+    }
 
 </script>
 
