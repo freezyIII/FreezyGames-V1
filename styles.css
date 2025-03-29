@@ -73,7 +73,7 @@ h2 {font-size: 2.5rem;color: #f04e31;text-align: center;}
 .page-link {padding: 10px 15px;margin: 0 5px;background-color: rgb(54, 56, 58);color: white;text-decoration: none;border-radius: 5px;}
 .page-link:hover {background-color: #343232;}
 
-.avis {background-color: #4CAF50;color: white;padding: 15px 32px;text-align: center;text-decoration: none;display: inline-block;font-size: 16px;border-radius: 8px;cursor: pointer;margin: 0 auto;}
+.avis {background-color: #4CAF50;color: white;padding: 15px 32px;text-align: center;text-decoration: none;display: inline-block;font-size: 16px;border-radius: 8px;cursor: pointer;margin: 0 auto;margin-top: 20px}
 
 
 /* Don */
